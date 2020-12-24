@@ -4,8 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <div class="container">
+      <h1>Rock Paper Scissors</h1>
+      <h2>Score</h2>
+      <div class="score">
+        <div>
+          <p class="score__points score__points--user">0</p>
+          <p class="score__player">User</p>
+        </div>
+        <div>
+          <p class="score__points score__points--computer">0</p>
+          <p class="score__player">Computer</p>
+        </div>
+      </div>
+      <div class="choices">
+        <button data-choice="rock">
+          <span class="choice">🪨</span>
+        </button>
+        <button data-choice="paper">
+          <span class="choice">📄</span>
+        </button>
+        <button data-choice="scissors">
+          <span class="choice">✂️</span>
+        </button>
+      </div>
+      <div class="game-over">
+        <h3 class="game-outcome">You win!</h3>
+        <button class="play-again">Play Again?</button>
+      </div>
+    </div>
     <script src="./main.js"></script>
   </body>
 </html>

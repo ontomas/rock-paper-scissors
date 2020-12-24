@@ -1,45 +1,48 @@
 (() => {
-  // winner is the highest score owner
+  // winner is the one who gets 5 points
   let score = {
     user: 0,
     computer: 0,
   };
+  let winner;
+  let isPlaying = true;
   const choices = ["rock", "paper", "scissors"];
+  const choicesBtns = document.querySelector(".choices");
+  const gameOverSection = document.querySelector(".game-over");
+  const gameOutcome = document.querySelector(".game-outcome");
+  const againBtn = document.querySelector(".play-again");
 
-  // show score helper
-  const showScore = () => {
-    console.log(`User: ${score.user} - Computer: ${score.computer}`);
-  };
-
-  // user won helper
-  const userWon = (userChoice, computerChoice) => {
-    score.user += 1;
-    console.log(`${userChoice} beats ${computerChoice}`);
-    showScore();
-  };
-
-  // computer won helper
-  const computerWon = (computerChoice, userChoice) => {
-    score.computer += 1;
-    console.log(`${computerChoice} beats ${userChoice}`);
-    showScore();
-  };
-
-  // start the game
-  // a game consists of 5 rounds
-  for (let i = 1; i <= 5; i++) {
-    // user inputs his choice
-    let userChoice = "";
-    while (!choices.includes(userChoice)) {
-      userChoice = prompt(
-        "What is your choice? (rock, paper, scissors):"
-      ).toLowerCase();
+  const gameOver = () => {
+    isPlaying = false;
+    choicesBtns.style.display = "none";
+    if (winner === "user") {
+      gameOutcome.textContent = "You win! 🎉";
+    } else {
+      gameOutcome.textContent = "You lose! 😵";
     }
-    console.log(`You chose: ${userChoice}`);
+    gameOverSection.style.display = "block";
+  };
 
+  const checkScore = () => {
+    if (score.user === 5) {
+      winner = "user";
+      gameOver();
+    }
+    if (score.computer === 5) {
+      winner = "computer";
+      gameOver();
+    }
+  };
+
+  const updateScore = () => {
+    document.querySelector(".score__points--user").textContent = score.user;
+    document.querySelector(".score__points--computer").textContent =
+      score.computer;
+  };
+
+  const playRound = (userChoice) => {
     // computer chooses between rock, paper and scissors
     let computerChoice = choices[Math.round(Math.random() * 2)];
-    console.log(`Computer chose: ${computerChoice}`);
 
     // scissors beats paper
     // paper beats rock
@@ -49,28 +52,36 @@
       (userChoice === "paper" && computerChoice === "rock") ||
       (userChoice === "rock" && computerChoice === "scissors")
     ) {
-      userWon();
+      score.user += 1;
     } else if (
       (computerChoice === "scissors" && userChoice === "paper") ||
       (computerChoice === "paper" && userChoice === "rock") ||
       (computerChoice === "rock" && userChoice === "scissors")
     ) {
-      computerWon();
+      score.computer += 1;
     } else {
       // a tie
       score.user += 1;
       score.computer += 1;
-      console.log("It's a tie!");
-      showScore();
     }
-  }
+    checkScore();
+    updateScore();
+  };
 
-  // announce winner
-  if (score.user > score.computer) {
-    console.log("Congratulations! You won");
-  } else if (score.user < score.computer) {
-    console.log("Better luck next time! You lost");
-  } else {
-    console.log("What a game! Its a tie");
-  }
+  // user inputs his choice
+  let userChoice = "";
+  choicesBtns.addEventListener("click", (e) => {
+    userChoice = e.target.parentNode.dataset.choice;
+    playRound(userChoice);
+  });
+
+  againBtn.addEventListener("click", () => {
+    isPlaying = true;
+    choicesBtns.style.display = "block";
+    gameOverSection.style.display = "none";
+    score.user = 0;
+    score.computer = 0;
+    winner = "";
+    updateScore();
+  });
 })();
